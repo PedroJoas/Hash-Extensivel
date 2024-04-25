@@ -1,11 +1,11 @@
 # Hash-Extensivel
 Repositório direcionado para o Trabalho I da SGBD 
 
-# Explicação do trabalho
+# Explicação do trabalho 
 
 Consiste em implementar um hash extensível utilizando Java em cima do arquivo compras.csv.
 
-## Arquivo compras.csv
+## Exemplo Arquivo compras.csv
 | Pedido | Valor|  Ano |
 | ------------- | ------------- | ------------- |
 | 1  | 5000 | 2018  | 
