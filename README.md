@@ -16,8 +16,7 @@ O programa vai receber um arquivo in.txt com uma série de comandos para serem f
 
 ## Exemplo in.txt:
 ```python
-PG/2      # Configura a profundidade global inicial do índice hash como 3.
-Isso significa que o diretório começará com 2^3 (ou seja, 8) buckets.
+PG/2      # Configura a profundidade global inicial do índice hash como 3. Isso significa que o diretório começará com 2^3 (ou seja, 8) buckets.
 INC:1998  # Insere um registro com chave 1998.
 INC:2024
 INC:1995
