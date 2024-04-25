@@ -1,32 +1,46 @@
 public class Registro {
-    private int pedido;
-    private double valor;
-    private int ano;
+    private String pedido;
+    private String valor;
+    private String ano;
+
+    public Registro(String pedido, String valor, String ano) {
+        this.pedido = pedido;
+        this.valor = valor;
+        this.ano = ano;
+    }
 
     
-    public Registro(int pedido, double valor, int ano) {
-        this.pedido = pedido;
-        this.valor = valor;
-        this.ano = ano;
-    }
-    
-    public int getPedido() {
+    public String getPedido() {
         return pedido;
     }
-    public void setPedido(int pedido) {
+
+
+    public void setPedido(String pedido) {
         this.pedido = pedido;
     }
-    public double getValor() {
+
+
+    public String getValor() {
         return valor;
     }
-    public void setValor(double valor) {
+
+
+    public void setValor(String valor) {
         this.valor = valor;
     }
-    public int getAno() {
+
+
+    public String getAno() {
         return ano;
     }
-    public void setAno(int ano) {
+
+
+    public void setAno(String ano) {
         this.ano = ano;
     }
+
+
     
+    
+   
 }
