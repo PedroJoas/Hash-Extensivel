@@ -27,7 +27,7 @@ INC:2005
 REM:2013
 ```
 ## Exemplo out.txt esperado
-```
+```bash
 PG/2   # Configura a profundidade global inicial do índice hash como 3. Isso significa que o diretório começará com 2^3 (ou seja, 8) buckets.
 INC:1998/2,2   # Operação: Chave/PG, PA 
 INC:2024/2,2
