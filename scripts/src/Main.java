@@ -1,26 +1,18 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        BufferedReader reader = new BufferedReader(new FileReader("scripts/data/compras.csv"));
-
-        String[] line = reader.readLine().split(",");
-        Registro tupla;
-
-        while(line != null){
-            String pedido = line[0];
-            String valor = line[1];
-            String ano = line[2];
-            tupla = new Registro(pedido, valor, ano);
+       Leitor reader = new Leitor();
 
 
-            System.out.println(tupla.getAno());
-
-            line =  reader.readLine().split(",");
-        }
-
-        reader.close();
+    while(reader.readFileIN() != null)
+       { if(reader.readFileIN() == "REM"){
+            System.out.println("Operação de remoção");
+        } else if (reader.readFileIN() == "INC"){
+            System.out.println("Operação de inserção");
+        } else {
+            System.out.println("Operação de busca");
+        }}
+       
     }
 }
  
