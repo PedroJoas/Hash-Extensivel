@@ -2,37 +2,48 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Leitor {
     private BufferedReader reader;
     private String path;
+    
 
-    public String readFileIN(){
+    public ArrayList<Object> readFileIN(){
         path =  "scripts/data/in.txt";
 
-        try {
+        ArrayList<Object> array = new ArrayList<>(); // Armazena os anos 
+
+        try { 
+
+            ArrayList<String> arrayAnos = new ArrayList<>(); // Armazena os anos 
 
             reader = new BufferedReader(new FileReader(path));
-
-            //String depth = reader.readLine().split("/")[1];
-
+            
+            String depth = reader.readLine().split("/")[1];
             String line;
-
+            
             while ((line = reader.readLine()) != null) {
-                //System.out.println(line.split(":")[0]);
-                return line.split(":")[0];
+                String ano = line.split(":")[1];
+                arrayAnos.add(ano);
             }
         
             //System.out.println("Profundidade: " + depth);
+            array.add(depth);
+            array.add(arrayAnos);
+
             reader.close();
-            return "";
+            return array;
+            
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + e.getMessage());
-            return "";
+            return array;
         } catch (IOException e){
             System.err.println("Error of I/O: " + e.getMessage());
-            return "";
+            return array;
         }
+
+        
     }
 
     public boolean readCSV() {

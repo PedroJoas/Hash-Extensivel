@@ -35,15 +35,20 @@ public class Bucket {
     }
     
     public void search(String key){
-        
+        // Usar a função hash para saber o indice, após isso
     }  
 
     public void insert(String key){
-        
+        // Verificar dentro do indexes.txt se o índice já existe
+        // Caso 1: não exista devo criar o arquivo bucket com o novo indice
+        // Caso 2.1: exista e só inserir
+        // Caso 2.2: exista, mas é necessario criar outro bucket pois o outro já esta cheio
+        // Se caso 2.2 seja feito é necessário aumentar a profundidade global 
     }
 
     public void remove(String key){
-        
+        // Após a remoção verificar o numero de valores dentro do bucket
+        // Caso esteja vazio, apagar arquivo do bucket e dependendo diminuir profundidade global
     }
 
     public boolean verificationBucketFull(int key){

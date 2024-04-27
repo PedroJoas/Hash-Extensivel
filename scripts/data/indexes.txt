@@ -1,0 +1,2 @@
+# Armazenar duas informacoes por linha, sendo elas (indice, nome do arquivo referenciado)
+# Exemplo: ("01", "bucket01.txt")

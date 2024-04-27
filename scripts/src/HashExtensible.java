@@ -10,10 +10,20 @@ public class HashExtensible {
         GlobalDepth = globalDepth;
     }
     
-    public String HashFunction(int ano){
-        int hashValue = (int) (ano % Math.pow(2, GlobalDepth));
-        return Integer.toBinaryString(hashValue);
+    public String HashFunction(String ano) {
+        int hashValue = (int) (Integer.parseInt(ano) % Math.pow(2, GlobalDepth));
+        
+        // Converter o valor do hash para uma representação binária
+        String hashBinario = Integer.toBinaryString(hashValue);
+        
+        // Verificar se o tamanho da string é 1 e adicionar um zero à esquerda, se necessário
+        if (hashBinario.length() == 1) {
+            hashBinario = "0" + hashBinario;
+        }
+        
+        return hashBinario;
     }
+    
 
     
 }

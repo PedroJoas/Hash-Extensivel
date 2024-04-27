@@ -1,18 +1,28 @@
+import java.util.ArrayList;
+
 
 public class Main {
     public static void main(String[] args) throws Exception {
-       Leitor reader = new Leitor();
+        Leitor reader = new Leitor();
+        HashExtensible hash = new HashExtensible();
+        Output output = new Output();
 
+        ArrayList<Object> result = reader.readFileIN();
+        ArrayList<String> anos = (ArrayList<String>) result.get(1);
 
-    while(reader.readFileIN() != null)
-       { if(reader.readFileIN() == "REM"){
-            System.out.println("Operação de remoção");
-        } else if (reader.readFileIN() == "INC"){
-            System.out.println("Operação de inserção");
-        } else {
-            System.out.println("Operação de busca");
-        }}
-       
+        String PG = (String) result.get(0);
+        ArrayList<String> anosHash =  new ArrayList<>();
+
+        hash.setGlobalDepth(Integer.parseInt(PG));
+
+        String line;
+        for(String ano : anos){
+            String chaveHash = hash.HashFunction(ano);
+            line = ano + "" + chaveHash;
+            output.writeFile(PG, line);
+        }
+
+      
     }
 }
  
