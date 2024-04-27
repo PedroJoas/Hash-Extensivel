@@ -23,6 +23,11 @@ public class HashExtensible {
         
         return hashBinario;
     }
+
+    public void insert(String tuple){
+        //Chamar insert de bucket
+        System.out.println(tuple + " Adicionada");
+    }
     
 
     

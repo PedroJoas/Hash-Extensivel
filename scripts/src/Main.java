@@ -8,16 +8,37 @@ public class Main {
         Output output = new Output();
 
         ArrayList<Object> result = reader.readFileIN();
-        ArrayList<String> anos = (ArrayList<String>) result.get(1);
+
+        ArrayList<String> commands = (ArrayList<String>) result.get(1);
 
         String PG = (String) result.get(0);
 
         hash.setGlobalDepth(Integer.parseInt(PG));
-        // SÓ ESCREVE DUAS LINHAS
+
         String line;
-        for(String ano : anos){
-            String chaveHash = hash.HashFunction(ano);
-            line = ano + ":" + chaveHash;
+        String ano;
+        String operation;
+        String chaveHash;
+        
+        for(String command : commands){
+
+            operation = command.split(":")[0];
+            ano = command.split(":")[1];
+            chaveHash = hash.HashFunction(ano);
+            if(operation.equals("INC")){
+                ArrayList<String> tuples = new ArrayList<>();
+                tuples = reader.readCSV(ano);
+                for(String tuple : tuples){
+                    hash.insert(tuple);
+                }
+            } else if (operation.equals("BUS")){ 
+                System.out.println("Buscar " + ano + "no bucket_" + chaveHash);
+            }else{
+                System.out.println("Remover " + ano + "no bucket_" + chaveHash);
+            }
+
+            
+            line = command + ":" + chaveHash;
             output.writeFile(PG, line);
         }
 

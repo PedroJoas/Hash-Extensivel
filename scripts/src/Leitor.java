@@ -16,7 +16,7 @@ public class Leitor {
 
         try { 
 
-            ArrayList<String> arrayAnos = new ArrayList<>(); // Armazena os anos 
+            ArrayList<String> lines = new ArrayList<>(); // Armazena os anos 
 
             reader = new BufferedReader(new FileReader(path));
             
@@ -24,13 +24,13 @@ public class Leitor {
             String line;
             
             while ((line = reader.readLine()) != null) {
-                String ano = line.split(":")[1];
-                arrayAnos.add(ano);
+                String ano = line.strip();
+                lines.add(ano);
             }
         
             //System.out.println("Profundidade: " + depth);
             array.add(depth);
-            array.add(arrayAnos);
+            array.add(lines);
 
             reader.close();
             return array;
@@ -46,30 +46,27 @@ public class Leitor {
         
     }
 
-    public boolean readCSV() {
+    public ArrayList<String> readCSV(String ano) {
     path = "scripts/data/compras.csv";
+    ArrayList<String> lines = new ArrayList<>();
     try {
         reader = new BufferedReader(new FileReader(path));
 
         String line;
         while ((line = reader.readLine()) != null) {
-            String[] fields = line.split(",");
-            String pedido = fields[0];
-            String valor = fields[1];
-            String ano = fields[2];
-            Registro tupla = new Registro(pedido, valor, ano);
-
-            System.out.println(tupla.getAno());
+            if(line.split(",")[2].equals(ano)){
+                lines.add(line);
+            }
         }
 
         reader.close();
-        return true;
+        return lines;
     } catch (FileNotFoundException e) {
         System.err.println("File not found: " + e.getMessage());
-        return false;
+        return lines;
     } catch (IOException e){
         System.err.println("Error of I/O: " + e.getMessage());
-        return false;
+        return lines;
     }
 }
 
