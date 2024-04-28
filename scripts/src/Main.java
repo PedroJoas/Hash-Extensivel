@@ -29,12 +29,12 @@ public class Main {
                 ArrayList<String> tuples = new ArrayList<>();
                 tuples = reader.readCSV(ano);
                 for(String tuple : tuples){
-                    hash.insert(tuple);
+                    hash.insert(tuple, chaveHash);
                 }
             } else if (operation.equals("BUS")){ 
-                System.out.println("Buscar " + ano + "no bucket_" + chaveHash);
+                System.out.println("Buscar " + ano + " no bucket_" + chaveHash);
             }else{
-                System.out.println("Remover " + ano + "no bucket_" + chaveHash);
+                System.out.println("Remover " + ano + " no bucket_" + chaveHash);
             }
 
             

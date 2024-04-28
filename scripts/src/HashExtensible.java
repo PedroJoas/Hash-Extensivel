@@ -1,6 +1,7 @@
 
 public class HashExtensible {
     private int GlobalDepth;
+    private Bucket bucket = new Bucket();
 
     public int getGlobalDepth() {
         return GlobalDepth;
@@ -24,8 +25,9 @@ public class HashExtensible {
         return hashBinario;
     }
 
-    public void insert(String tuple){
+    public void insert(String tuple, String hashIndex){
         //Chamar insert de bucket
+        bucket.insert(tuple, hashIndex);
         System.out.println(tuple + " Adicionada");
     }
     
