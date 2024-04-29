@@ -9,10 +9,11 @@ import java.io.IOException;
 public class Bucket {
     private int LocalDepth;
     private int numEntries;
-    private String filename;
+    private String bucketFile;
     static final private String DIRNAME = "scripts/buckets";
     private HashExtensible hashmap;
     private String indexesPath = "scripts/data/indexes.txt";
+    private String  pathBucketFile = String.format("%d/%d",DIRNAME, bucketFile);
     
     
     public Bucket() {
@@ -33,23 +34,40 @@ public class Bucket {
         this.LocalDepth = localDepth;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setBucketFile(String bucketFile) {
+        this.bucketFile = bucketFile;
     }
     public int getLocalDepth() {
         return LocalDepth;
     }
-    public int getNumEntries(String filename) {
+
+    public void setNumEntries(int numEntries){
+        this.numEntries = numEntries;
+    }
+    public int getNumEntries(String bucketFile) {
+
+        try{
+            BufferedReader reader = new BufferedReader(new FileReader(pathBucketFile));
+            int lines = 0;
+            while (reader.readLine() != null) lines++;
+            setNumEntries(lines);
+            reader.close();
+        }catch(FileNotFoundException e){
+            System.out.println("Error: File not found  "+ e.getMessage());
+        }catch(IOException e){
+            System.out.println("Error: IO Exception " + e.getMessage());
+    }
+        
         return numEntries;
     }
-    public String getFilename() {
-        return filename;
+    public String getBucketFile() {
+        return bucketFile;
     }
     public static String getDirname() {
         return DIRNAME;
     }
     
-    public void search(String key){
+    public void search(String hashIndex){
         // Usar a função hash para saber o indice, após isso
     }  
 
@@ -62,22 +80,19 @@ public class Bucket {
 
             String line;
 
-            if (verificationBucketExists(hashIndex)){
-                // Verificar tamanho do bucket
-                // Caso 2.1: exista e só inserir
-                // Caso 2.2: exista, mas esteja cheio
-                // Se caso 2.2 seja feito é necessário aumentar a profundidade global
-                
-                
-            } else {
-
+            if (!verificationBucketExists(hashIndex)){
                 // Caso 1: não exista devo criar o arquivo bucket com o novo indice
                 createBucketFile(hashIndex);
-                writer.write(String.format("%d,bucket_%d.txt", hashIndex, hashIndex)); // Adicionando a informacao no indexes.txt
-                insert(tuple, hashIndex);
+                writer.write(String.format("%d,bucket_%d.txt", hashIndex, hashIndex)); // Adicionando a informacao no indexes.txt   
             }
 
+            // Verificar tamanho do bucket
+            if(){}
+            // Caso 2.1: exista e só inserir
+            // Caso 2.2: exista, mas esteja cheio
+            // Se caso 2.2 seja feito é necessário aumentar a profundidade global
             writer.close();
+
         } catch (IOException e) {
             System.out.println("Error: Failed to create file" + e.getMessage());
         }
@@ -86,12 +101,13 @@ public class Bucket {
         // Se caso 2.2 seja feito é necessário aumentar a profundidade global 
     }
 
-    public void remove(String key){
+    public void remove(String hashIndex, String ano){
         // Após a remoção verificar o numero de valores dentro do bucket
         // Caso esteja vazio, apagar arquivo do bucket e dependendo diminuir profundidade global
     }
 
-    public boolean verificationBucketFull(int key){
+    public boolean verificationBucketFull(String bucketFile){
+        getNumEntries(bucketFile);
         return true;
     }
 
@@ -124,9 +140,8 @@ public class Bucket {
     }
 
     private void createBucketFile(String hashIndex){
-        String pathBucket = String.format("%d/bucket_%d.txt", DIRNAME, hashIndex);
         try {
-            File bucketFile = new File(pathBucket);
+            File bucketFile = new File(pathBucketFile);
             if (!bucketFile.exists()) {
                 bucketFile.createNewFile();
             }
@@ -136,3 +151,11 @@ public class Bucket {
     }
     
 }
+// Verificar as duplicatas dentro do bucket
+    private void verificantionDuplicates(String bucketFile, String tuple){
+        // Verificar se os valores adicionandos já estão no bucket
+
+    }
+    private void redistributionBucket(String bucketDuplicated, String newBucket){
+        // redistribuir valores dentro do bucket
+    }
