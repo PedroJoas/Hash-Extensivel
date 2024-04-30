@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Bucket {
-    private int LocalDepth;
+    private int localDepth;
     private int numEntries;
     private String bucketFile;
     static final private String DIRNAME = "scripts/buckets";
@@ -31,14 +31,14 @@ public class Bucket {
     }
 
     public void setLocalDepth(int localDepth) {
-        this.LocalDepth = localDepth;
+        this.localDepth = localDepth;
     }
 
     public void setBucketFile(String bucketFile) {
         this.bucketFile = bucketFile;
     }
     public int getLocalDepth() {
-        return LocalDepth;
+        return localDepth;
     }
 
     public void setNumEntries(int numEntries){
@@ -60,6 +60,7 @@ public class Bucket {
         
         return numEntries;
     }
+   
     public String getBucketFile() {
         return bucketFile;
     }
@@ -87,7 +88,9 @@ public class Bucket {
             }
 
             // Verificar tamanho do bucket
-            if(){}
+            
+
+            
             // Caso 2.1: exista e só inserir
             // Caso 2.2: exista, mas esteja cheio
             // Se caso 2.2 seja feito é necessário aumentar a profundidade global
@@ -106,12 +109,15 @@ public class Bucket {
         // Caso esteja vazio, apagar arquivo do bucket e dependendo diminuir profundidade global
     }
 
-    public boolean verificationBucketFull(String bucketFile){
-        getNumEntries(bucketFile);
+    private boolean verificationBucketFull(String hashIndex){
+        if((numEntries > Math.pow(2, localDepth))){
+            duplicateBucket(hashIndex);
+        }
+        
         return true;
     }
 
-    private void duplicateBucket(){
+    private void duplicateBucket(String hashIndex){
         hashmap.setGlobalDepth(hashmap.getGlobalDepth() + 1);
     }
 
@@ -158,4 +164,8 @@ public class Bucket {
     }
     private void redistributionBucket(String bucketDuplicated, String newBucket){
         // redistribuir valores dentro do bucket
+    }
+
+    private void identifyBucket(String hashIndex){
+        String bucketFilepath = String.format("",hashIndex, null)
     }
