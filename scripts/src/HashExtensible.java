@@ -1,18 +1,8 @@
 
 public class HashExtensible {
-    private int GlobalDepth;
-    private Bucket bucket = new Bucket();
-
-    public int getGlobalDepth() {
-        return GlobalDepth;
-    }
-
-    public void setGlobalDepth(int globalDepth) {
-        GlobalDepth = globalDepth;
-    }
     
-    public String HashFunction(String ano) {
-        int hashValue = (int) (Integer.parseInt(ano) % Math.pow(2, GlobalDepth));
+    public String HashFunction(String ano, Diretorio diretorio) {
+        int hashValue = (int) (Integer.parseInt(ano) % Math.pow(2, diretorio.getGlobalDepth()));
         
         // Converter o valor do hash para uma representação binária
         String hashBinario = Integer.toBinaryString(hashValue);
@@ -24,13 +14,6 @@ public class HashExtensible {
         
         return hashBinario;
     }
-
-    public void insert(String tuple, String hashIndex){
-        //Chamar insert de bucket
-        bucket.insert(tuple, hashIndex);
-        System.out.println(tuple + " Adicionada");
-    }
-    
 
     
 }
