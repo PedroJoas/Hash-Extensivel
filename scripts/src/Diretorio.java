@@ -9,11 +9,11 @@ import java.io.IOException;
 public class Diretorio {
     private int globalDepth;
     private String dirBuckets = "scripts/buckets";
+
     private int numMaxBuckets = (int) Math.pow(2, globalDepth);
     private Bucket bucket = new Bucket();
     private HashExtensible hash;
     private String indexesPath = "scripts/data/indexes.txt";
-    private String pathBucketFile = String.format("%d/%d",dirBuckets, );
 
     public Diretorio(){
 
@@ -55,13 +55,10 @@ public class Diretorio {
         
     }
     private boolean verificationBucketExists(String hashIndex){
-
         try
         {
-
             try (BufferedReader reader = new BufferedReader(new FileReader(indexesPath))) {
                 String line;
-
                 while((line = reader.readLine()) != null){
                     if(line.split(",")[0].equals(hashIndex)){
                         return true;
@@ -81,31 +78,28 @@ public class Diretorio {
         return false;
     }
 
-    public void insertIndex(String hashIndex){
+    public void insertIndex(String ano) throws IOException{
+        String hashIndex = hash.HashFunction(ano, globalDepth);
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(indexesPath, true))) {
 
-            String line;
-
-            if (!verificationBucketExists(hashIndex)){
-                // Caso 1: não exista devo criar o arquivo bucket com o novo indice
-                createBucketFile(hashIndex);
                 try {
                     writer.write(String.format("%d,bucket_%d.txt", hashIndex, hashIndex));
+                    createBucketFile(hashIndex);
                 } catch (IOException e) {
                     
                     System.out.println("Error: IOException " + e.getMessage());
                 }  
             }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        } 
 
-    }
+    
     private void createBucketFile(String ano){
-        
+        String hashIndex = hash.HashFunction(ano, globalDepth);
+        String path = String.format("/bucket_%d.txt", dirBuckets, hashIndex);
+
         try {
-            File bucketFile = new File(pathBucketFile);
+            File bucketFile = new File(path);
             if (!bucketFile.exists()) {
                 bucketFile.createNewFile();
             }
@@ -113,4 +107,20 @@ public class Diretorio {
             System.out.println("Error: DIR not found");
         }
     }
+
+    private boolean verificationBucketFull(String hashIndex){
+        
+        if((bucket.getNumEntries(hashIndex) > Math.pow(2, bucket.getLocalDepth(hashIndex)))){
+            duplicateDirectory(hashIndex);   
+        }
+        
+        return true;
+    }
+
+    private void duplicateDirectory(String hashIndex){
+        increaseGlobalDepth();
+    }
+    public void insert(String tuple, String hashIndex){}
+    public void remove(){}
+    public void search(){}
 }

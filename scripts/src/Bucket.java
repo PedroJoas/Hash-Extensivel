@@ -21,29 +21,45 @@ public class Bucket {
 
     }
 
-    public void setLocalDepth(int localDepth) {
-        this.localDepth = localDepth;
+    public void increaseLocalDepth() {
+        
+        this.localDepth += 1;
+
     }
+
 
     public void setBucketFile(String bucketFile) {
         this.bucketFile = bucketFile;
     }
-    public int getLocalDepth() {
+    public int getLocalDepth(String hashIndex) {
+        // Pegar primeira linha do arquivo bucket
+        this.bucketFile = String.format("bucket_%d.txt", hashIndex);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(pathBucketFile))) {
+            this.localDepth = Integer.parseInt(reader.readLine().split("/")[1]);
+        } catch (IOException e) {
+            System.out.println("Error: IOException " + e.getMessage());
+        }
+
         return localDepth;
     }
 
     public void setNumEntries(int numEntries){
         this.numEntries = numEntries;
     }
-    public int getNumEntries(String bucketFile) {
-        this.bucketFile = bucketFile;
-
+    public int getNumEntries(String hashIndex) {
+        this.bucketFile = String.format("bucket_%d.txt", hashIndex);
+        //  A primeira linha do arquivo bucket seria a profundidade local
+        /*Exemplo
+         * PL/2
+         * "1,158,2020"
+        */
         try{
 
             BufferedReader reader = new BufferedReader(new FileReader(pathBucketFile));
             int lines = 0;
             while (reader.readLine() != null) lines++;
-            setNumEntries(lines);
+            this.numEntries = lines;
             reader.close();
             
         }catch(FileNotFoundException e){
@@ -70,7 +86,7 @@ public class Bucket {
     public void insert(String tuple, String hashIndex){
         //String path = "scripts/data/indexes.txt";
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(""))
+            BufferedWriter writer = new BufferedWriter(new FileWriter(""));
             
 
             // Verificar tamanho do bucket
@@ -95,26 +111,15 @@ public class Bucket {
         // Caso esteja vazio, apagar arquivo do bucket e dependendo diminuir profundidade global
     }
 
-    private boolean verificationBucketFull(String hashIndex){
-        if((numEntries > Math.pow(2, localDepth))){
-            
-        }
-        
-        return true;
-    }
-
-    
-
-    
-
     
     // Verificar as duplicatas dentro do bucket
-    private void verificationDuplicates(String bucketFile, String tuple){
+    public void verificationDuplicates(String bucketFile, String tuple){
         // Verificar se os valores adicionandos já estão no bucket
 
     }
-    private void redistributionBucket(String bucketDuplicated, String newBucket){
+    public void redistributionBucket(String bucketDuplicated, String newBucket){
         // redistribuir valores dentro do bucket
+
     }
 
     private void identifyBucket(String hashIndex){

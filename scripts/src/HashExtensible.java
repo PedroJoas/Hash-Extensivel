@@ -1,8 +1,8 @@
 
 public class HashExtensible {
     
-    public String HashFunction(String ano, Diretorio diretorio) {
-        int hashValue = (int) (Integer.parseInt(ano) % Math.pow(2, diretorio.getGlobalDepth()));
+    public String HashFunction(String ano, int globalDepth) {
+        int hashValue = (int) (Integer.parseInt(ano) % Math.pow(2, globalDepth));
         
         // Converter o valor do hash para uma representação binária
         String hashBinario = Integer.toBinaryString(hashValue);
