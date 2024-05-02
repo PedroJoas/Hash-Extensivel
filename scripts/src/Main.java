@@ -4,7 +4,6 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) throws Exception {
         Leitor reader = new Leitor();
-        HashExtensible hash = new HashExtensible();
         Output output = new Output();
         Diretorio diretorio = new Diretorio();
         ArrayList<Object> result = reader.readFileIN();
@@ -12,36 +11,37 @@ public class Main {
         ArrayList<String> commands = (ArrayList<String>) result.get(1);
 
         String PG = (String) result.get(0);
-
+        diretorio.setGlobalDepth(Integer.parseInt(PG));
 
         String line;
         String ano;
         String operation;
-        String chaveHash;
-        
+
         for(String command : commands){
 
             operation = command.split(":")[0];
             ano = command.split(":")[1];
-            chaveHash = hash.HashFunction(ano, diretorio);
-
+            //chaveHash = hash.HashFunction(ano, diretorio);
+            
             if(operation.equals("INC")){
                 ArrayList<String> tuples = new ArrayList<>();
                 tuples = reader.readCSV(ano);
                 
                 for(String tuple : tuples){
-                    hash.insert(tuple, chaveHash);
+                    diretorio.insert(tuple, ano);
+                    // Adicionar output
+                    line = "INC:" + ano + "/";
+                    output.writeFile(PG, line);
                 }
 
             } else if (operation.equals("BUS")){ 
-                System.out.println("Buscar " + ano + " no bucket_" + chaveHash);
+                System.out.println("Buscar " + ano );
             }else{
-                System.out.println("Remover " + ano + " no bucket_" + chaveHash);
+                System.out.println("Remover " + ano );
             }
 
             
-            line = command + ":" + chaveHash;
-            output.writeFile(PG, line);
+            
         }
 
       

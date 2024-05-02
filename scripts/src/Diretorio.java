@@ -10,13 +10,14 @@ public class Diretorio {
     private int globalDepth;
     private String dirBuckets = "scripts/buckets";
 
-    private int numMaxBuckets = (int) Math.pow(2, globalDepth);
+    private int numMaxBuckets = (int) Math.pow(2, 0);
+
     private Bucket bucket = new Bucket();
     private HashExtensible hash;
     private String indexesPath = "scripts/data/indexes.txt";
 
     public Diretorio(){
-
+        hash = new HashExtensible();
         try {
             File fileIndex = new File(indexesPath);
             if (!fileIndex.exists()) { // Verificar se o arquivo existe e, se não existir, criá-lo
@@ -29,6 +30,10 @@ public class Diretorio {
 
     public int getGlobalDepth() {
         return globalDepth;
+    }
+    
+    public void setGlobalDepth(int globalDepth) {
+        this.globalDepth = globalDepth;
     }
 
     private void increaseGlobalDepth(){
@@ -54,6 +59,7 @@ public class Diretorio {
     public void insert(String hashIndex){
         
     }
+
     private boolean verificationBucketExists(String hashIndex){
         try
         {
@@ -78,49 +84,70 @@ public class Diretorio {
         return false;
     }
 
-    public void insertIndex(String ano) throws IOException{
-        String hashIndex = hash.HashFunction(ano, globalDepth);
-
+    public void insertIndex(String hashIndex) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(indexesPath, true))) {
-
-                try {
-                    writer.write(String.format("%d,bucket_%d.txt", hashIndex, hashIndex));
+            try {
+                if(!verificationBucketExists(hashIndex)){
+                    writer.write(hashIndex + ",bucket_" + hashIndex + ".txt");
+                    writer.newLine();
                     createBucketFile(hashIndex);
-                } catch (IOException e) {
-                    
-                    System.out.println("Error: IOException " + e.getMessage());
-                }  
+                }
+            } catch (IOException e) {
+                System.out.println("Error: IOException " + e.getMessage());
             }
-        } 
+        }
+    }
+     
 
     
     private void createBucketFile(String ano){
         String hashIndex = hash.HashFunction(ano, globalDepth);
-        String path = String.format("/bucket_%d.txt", dirBuckets, hashIndex);
-
+        String path = String.format("%s/bucket_%s.txt", dirBuckets, hashIndex);
+    
         try {
             File bucketFile = new File(path);
             if (!bucketFile.exists()) {
                 bucketFile.createNewFile();
             }
         } catch (Exception e) {
-            System.out.println("Error: DIR not found");
+            System.out.println("Error: Failed to create bucket file");
+            e.printStackTrace();
         }
     }
+    
 
-    private boolean verificationBucketFull(String hashIndex){
+    private boolean verificationDirectoryFull(String hashIndex){
         
-        if((bucket.getNumEntries(hashIndex) > Math.pow(2, bucket.getLocalDepth(hashIndex)))){
+        if((countBuckets() > Math.pow(2, bucket.getLocalDepth(hashIndex)))){
             duplicateDirectory(hashIndex);   
         }
         
         return true;
     }
 
-    private void duplicateDirectory(String hashIndex){
+    private String duplicateDirectory(String hashIndex){
+        // Aumentar a profundidade local do bucket e global
         increaseGlobalDepth();
+        int newLocalDepth = bucket.increaseLocalDepth();
+        // retornar a nova PG, PL
+        // Ajeitar o main para receber essa string e concatene com a outra
+        return String.format("%d,%d", globalDepth, newLocalDepth);
     }
-    public void insert(String tuple, String hashIndex){}
-    public void remove(){}
+
+    
+    public void insert(String tuple, String ano) throws IOException{
+        // converter para o hash index
+        String hashIndex = hash.HashFunction(ano, globalDepth);
+        // Preciso retornar a PG, PL
+        if(!verificationBucketExists(hashIndex)){
+            insertIndex(hashIndex);
+        }
+
+        bucket.insert(tuple, hashIndex);
+
+    }
+    public void remove(){
+        //Após o remove verificar se o bucket está vazio, caso sim apaga-lo
+    }
     public void search(){}
 }

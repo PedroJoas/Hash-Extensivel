@@ -13,27 +13,29 @@ public class Bucket {
     private String bucketFile;
     static final private String DIRNAME = "scripts/buckets";
     private HashExtensible hashmap;
-    private String pathBucketFile = String.format("%d/%d",DIRNAME, bucketFile);
-    
+    private String pathBucketFile = DIRNAME + "/" + bucketFile;
+    BufferedWriter writer;
     
     public Bucket() {
         this.hashmap = new HashExtensible();
-
+        this.localDepth = 2;
     }
 
-    public void increaseLocalDepth() {
+    public int increaseLocalDepth() {
+        int newLocalDepth = localDepth + 1;
         
-        this.localDepth += 1;
-
+        return newLocalDepth;
     }
 
+    
 
-    public void setBucketFile(String bucketFile) {
-        this.bucketFile = bucketFile;
+    public void setBucketFile(String hashIndex) {
+        this.bucketFile = "bucket_"+bucketFile+".txt";
     }
+
     public int getLocalDepth(String hashIndex) {
         // Pegar primeira linha do arquivo bucket
-        this.bucketFile = String.format("bucket_%d.txt", hashIndex);
+        this.bucketFile = "bucket_" + hashIndex + ".txt";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(pathBucketFile))) {
             this.localDepth = Integer.parseInt(reader.readLine().split("/")[1]);
@@ -55,7 +57,6 @@ public class Bucket {
          * "1,158,2020"
         */
         try{
-
             BufferedReader reader = new BufferedReader(new FileReader(pathBucketFile));
             int lines = 0;
             while (reader.readLine() != null) lines++;
@@ -85,11 +86,18 @@ public class Bucket {
     // tuple = linhas do compras.csv
     public void insert(String tuple, String hashIndex){
         //String path = "scripts/data/indexes.txt";
+        
+        setBucketFile(hashIndex);
+        File file = new File(pathBucketFile);
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(""));
             
-
-            // Verificar tamanho do bucket
+            if (!file.exists()) {
+                writer = new BufferedWriter(new FileWriter(pathBucketFile));
+                writer.write("PL/" + localDepth);
+                writer.newLine();
+            } else {
+                writer = new BufferedWriter(new FileWriter(pathBucketFile, true));
+            }
             
 
             
