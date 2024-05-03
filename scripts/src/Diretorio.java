@@ -148,9 +148,11 @@ public class Diretorio {
 
     }
 
-    public void remove(String ano){
-        
+    public int remove(String ano){
+        String hashIndex = hash.HashFunction(ano, globalDepth);
 
+        int removeLines = bucket.remove(hashIndex, ano);
+        return removeLines;
     }
     public int search(String ano) throws IOException{
         String hashIndex = hash.HashFunction(ano, globalDepth);

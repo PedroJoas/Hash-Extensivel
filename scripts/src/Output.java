@@ -14,7 +14,7 @@ public class Output {
             File file = new File(path);
             if (!file.exists()) {
                 file.createNewFile();
-                arquivoCriado = true;
+                arquivoCriado = false;
 
             }
         } catch (IOException e) {

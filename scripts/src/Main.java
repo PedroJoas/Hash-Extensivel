@@ -41,7 +41,8 @@
                     output.writeFile(PG, line);
                 }else{
                     //System.out.println("Remover " + ano );
-                    line  = "REM:"+ano+"/";
+                    int numLinesRemoved = diretorio.remove(ano);
+                    line  = "REM:"+ano+"/"+numLinesRemoved;
                     output.writeFile(PG, line);
                 }   
             }

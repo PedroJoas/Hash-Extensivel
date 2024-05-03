@@ -83,7 +83,7 @@ public class Bucket {
     public int search(String hashIndex, String anoCSV) throws IOException{
         // Usar a função hash para saber o indice, após isso
             String path = pathBucketFile+"/bucket_"+hashIndex+".txt";
-
+            
         
             BufferedReader reader = new BufferedReader(new FileReader(path));
             
@@ -125,7 +125,35 @@ public class Bucket {
         writer.close();
     }
 
-    public void remove(String hashIndex, String ano){
+    public int remove(String hashIndex, String ano){
+        String path = pathBucketFile+"bucket_"+hashIndex+".txt";
+        String pathTempFile = pathBucketFile+"temp_bucket_"+hashIndex+".txt";
+
+        File file = new File(path);
+        File tempFile = new File(pathTempFile);
+        ArrayList removeLines = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+
+            String line;
+
+            // Remover linhas específicas (substitua com suas condições)
+            while ((line = reader.readLine()) != null) {
+                if (!(line.contains(ano))) {
+                    writer.write(line);
+                    writer.newLine();
+                }else{
+                    removeLines.add(line);
+                }
+            }
+
+        } catch (IOException e) {
+            System.err.println("Erro ao ler/escrever o arquivo: " + e.getMessage());
+        }
+        tempFile.renameTo(file);
+
+        return removeLines.size(); // Retornar o número de linhas apagadas
         // Após a remoção verificar o numero de valores dentro do bucket
         // Caso esteja vazio, apagar arquivo do bucket e dependendo diminuir profundidade global
     }
@@ -141,6 +169,7 @@ public class Bucket {
 
     }
 
+    
     private void identifyBucket(String hashIndex){
         String bucketFilepath = String.format("",hashIndex, null);
     }
