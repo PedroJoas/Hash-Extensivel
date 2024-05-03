@@ -10,7 +10,7 @@ public class Diretorio {
     private int globalDepth;
     private String dirBuckets = "scripts/buckets";
 
-    private int numMaxBuckets = (int) Math.pow(2, 0);
+    private int numMaxBuckets;
 
     private Bucket bucket = new Bucket();
     private HashExtensible hash;
@@ -119,26 +119,28 @@ public class Diretorio {
 
     private boolean verificationDirectoryFull(String hashIndex){
         
-        if((countBuckets() > Math.pow(2, globalDepth))){
-            duplicateDirectory(hashIndex);   
+        if((countBuckets()+1 > Math.pow(2, globalDepth))){
+            duplicateDirectory(hashIndex); 
+            return true;  
         }
         
-        return true;
+        return false;
     }
 
     private String duplicateDirectory(String hashIndex){
         // Aumentar a profundidade local do bucket e global
         increaseGlobalDepth();
-        int newLocalDepth = bucket.increaseLocalDepth();
+        bucket.increaseLocalDepth(hashIndex);
         // retornar a nova PG, PL
         // Ajeitar o main para receber essa string e concatene com a outra
-        return String.format("%d,%d", globalDepth, newLocalDepth);
+        return "DUP_DIR:/"+globalDepth+","+bucket.getLocalDepth(hashIndex);
     }
 
     
     public void insert(String tuple, String ano) throws IOException{
-        // converter para o hash index
         String hashIndex = hash.HashFunction(ano, globalDepth);
+        // converter para o hash index
+        
         // Preciso retornar a PG, PL
         if(!verificationBucketExists(hashIndex)){
             insertIndex(hashIndex);

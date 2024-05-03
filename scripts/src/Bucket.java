@@ -22,11 +22,36 @@ public class Bucket {
         this.localDepth = 2;
     }
 
-    public int increaseLocalDepth() {
-        int newLocalDepth = localDepth + 1;
-        
-        return newLocalDepth;
+    public void increaseLocalDepth(String hashIndex) {
+        String filePath = pathBucketFile + "bucket_" + hashIndex + ".txt";
+        String tempFilePath = "caminho/do/seu/arquivo_temp.txt";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFilePath))) {
+
+            String line;
+            int currentLine = 1;
+
+            // Lê e modifica apenas a primeira linha
+            while ((line = reader.readLine()) != null) {
+                if (currentLine == 1) {
+                    // Modifique a primeira linha aqui
+                    line = "PL/"+localDepth+1;
+                }
+                writer.write(line + System.getProperty("line.separator"));
+                currentLine++;
+            }
+
+        } catch (IOException e) {
+            System.err.println("Erro ao ler/escrever no arquivo: " + e.getMessage());
+        }
+
+        // Renomear o arquivo temporário para o nome original
+        File file = new File(filePath);
+        File tempFile = new File(tempFilePath);
+        tempFile.renameTo(file);
     }
+    
 
     
 
@@ -201,6 +226,4 @@ public class Bucket {
         }
 
     }
-
-
 }
