@@ -15,7 +15,7 @@ public class Bucket {
     private String bucketFile;
     static final private String DIRNAME = "scripts/buckets";
     private HashExtensible hashmap;
-    private String pathBucketFile = DIRNAME + "/" + bucketFile;
+    private String pathBucketFile = DIRNAME + "/";
     BufferedWriter writer;
     
     public Bucket() {
@@ -83,9 +83,10 @@ public class Bucket {
     
     public int search(String hashIndex, String anoCSV) throws IOException{
         // Usar a função hash para saber o indice, após isso
-            setBucketFile(hashIndex);
+            String path = pathBucketFile+"/bucket_"+hashIndex+".txt";
+
         
-            BufferedReader reader = new BufferedReader(new FileReader(pathBucketFile));
+            BufferedReader reader = new BufferedReader(new FileReader(path));
             
             String line = reader.readLine(); // Primeira linha tem a profundidade global
             ArrayList<String> tuples = new ArrayList<>();
@@ -102,29 +103,23 @@ public class Bucket {
     }  
 
     // tuple = linhas do compras.csv
-    public void insert(String tuple, String hashIndex){
+    
+    public void insert(String tuple, String hashIndex) throws IOException{
         
-        setBucketFile(hashIndex);
-        File file = new File(pathBucketFile);
-        try {
-            
-            if (!file.exists()) {
+        String path = pathBucketFile+"bucket_"+hashIndex+".txt";
 
-                writer = new BufferedWriter(new FileWriter(pathBucketFile));
+        try (BufferedReader file = new BufferedReader(new FileReader(path))) {
+            if ((file.readLine() == null)) {
+
+                writer = new BufferedWriter(new FileWriter(path));
                 writer.write("PL/" + localDepth);
                 writer.newLine();
-            } 
-
-            writer = new BufferedWriter(new FileWriter(pathBucketFile, true));
+            }
+        }
+            writer = new BufferedWriter(new FileWriter(path, true));
             writer.write(tuple);
             writer.newLine();
-            
-           
 
-        } catch (IOException e) {
-            System.out.println("Error: Failed to create file" + e.getMessage());
-        }
-        
         // Caso 2.2: exista, mas esteja cheio
         // Se caso 2.2 seja feito é necessário aumentar a profundidade global 
     }
