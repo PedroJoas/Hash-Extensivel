@@ -22,7 +22,7 @@ public class Main {
             operation = command.split(":")[0];
             ano = command.split(":")[1];
             //chaveHash = hash.HashFunction(ano, diretorio);
-            
+            System.out.println(ano);
             if(operation.equals("INC")){
                 ArrayList<String> tuples = new ArrayList<>();
                 tuples = reader.readCSV(ano);
@@ -35,7 +35,8 @@ public class Main {
                 }
 
             } else if (operation.equals("BUS")){ 
-                System.out.println("Buscar " + ano );
+                int numTuples = diretorio.search(ano);
+                System.out.println("BUS:"+ano+"/"+numTuples);
             }else{
                 System.out.println("Remover " + ano );
             }

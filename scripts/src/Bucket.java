@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class Bucket {
     
@@ -79,31 +81,44 @@ public class Bucket {
         return DIRNAME;
     }
     
-    public void search(String hashIndex){
+    public int search(String hashIndex, String anoCSV) throws IOException{
         // Usar a função hash para saber o indice, após isso
+            setBucketFile(hashIndex);
+        
+            BufferedReader reader = new BufferedReader(new FileReader(pathBucketFile));
+            
+            String line = reader.readLine(); // Primeira linha tem a profundidade global
+            ArrayList<String> tuples = new ArrayList<>();
+
+            while ((line = reader.readLine()) != null) {
+                String ano = line.split(",")[2];
+                if(ano.equals(anoCSV)){
+                    tuples.add(line);
+                }
+            }
+
+            return tuples.size();
+        
     }  
 
     // tuple = linhas do compras.csv
     public void insert(String tuple, String hashIndex){
-        //String path = "scripts/data/indexes.txt";
         
         setBucketFile(hashIndex);
         File file = new File(pathBucketFile);
         try {
             
             if (!file.exists()) {
+
                 writer = new BufferedWriter(new FileWriter(pathBucketFile));
                 writer.write("PL/" + localDepth);
                 writer.newLine();
-            } else {
-                writer = new BufferedWriter(new FileWriter(pathBucketFile, true));
-            }
-            
+            } 
 
+            writer = new BufferedWriter(new FileWriter(pathBucketFile, true));
+            writer.write(tuple);
+            writer.newLine();
             
-            // Caso 2.1: exista e só inserir
-            // Caso 2.2: exista, mas esteja cheio
-            // Se caso 2.2 seja feito é necessário aumentar a profundidade global
            
 
         } catch (IOException e) {
@@ -131,6 +146,6 @@ public class Bucket {
     }
 
     private void identifyBucket(String hashIndex){
-        String bucketFilepath = String.format("",hashIndex, null)
+        String bucketFilepath = String.format("",hashIndex, null);
     }
 }

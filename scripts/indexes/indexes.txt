@@ -2,6 +2,3 @@
 00,bucket_00.txt
 11,bucket_11.txt
 01,bucket_01.txt
-01,bucket_01.txt
-01,bucket_01.txt
-01,bucket_01.txt

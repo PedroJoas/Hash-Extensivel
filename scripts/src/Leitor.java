@@ -10,8 +10,8 @@ public class Leitor {
     
 
     public ArrayList<Object> readFileIN(){
-        path =  "scripts/data/in.txt";
-
+        path =  "scripts/IO/in.txt";
+        
         ArrayList<Object> array = new ArrayList<>(); // Armazena os anos 
 
         try { 

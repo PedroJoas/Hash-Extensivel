@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Output {
-    private String path = "scripts/data/out.txt";
+    private String path = "scripts/IO/out.txt";
     private boolean arquivoCriado = false; // Variável para controlar se o arquivo já foi criado
     BufferedWriter writer;
 
