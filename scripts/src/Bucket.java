@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Bucket {
@@ -109,6 +108,7 @@ public class Bucket {
         String path = pathBucketFile+"bucket_"+hashIndex+".txt";
 
         try (BufferedReader file = new BufferedReader(new FileReader(path))) {
+
             if ((file.readLine() == null)) {
 
                 writer = new BufferedWriter(new FileWriter(path));
@@ -122,6 +122,7 @@ public class Bucket {
 
         // Caso 2.2: exista, mas esteja cheio
         // Se caso 2.2 seja feito é necessário aumentar a profundidade global 
+        writer.close();
     }
 
     public void remove(String hashIndex, String ano){

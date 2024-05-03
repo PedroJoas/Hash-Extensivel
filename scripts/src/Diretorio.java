@@ -17,14 +17,17 @@ public class Diretorio {
     private String indexesPath = "scripts/indexes/indexes.txt";
 
     public Diretorio(){
+
         hash = new HashExtensible();
         try {
             File fileIndex = new File(indexesPath);
             if (!fileIndex.exists()) { // Verificar se o arquivo existe e, se não existir, criá-lo
                 fileIndex.createNewFile();
+                System.out.println("Arquivo indexes criado!");
             } 
+
         } catch (IOException e) {
-            System.out.println("Error: IOException " + e.getMessage());
+            System.out.println("Error: Failed create file " + e.getMessage());
         }
     }
 
@@ -84,7 +87,7 @@ public class Diretorio {
 
     public void insertIndex(String hashIndex) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(indexesPath, true))) {
-            try{// verificar existencia do indice no arquivo indexes
+            try{
                 if(!verificationBucketExists(hashIndex)){
                     writer.write(hashIndex + ",bucket_" + hashIndex + ".txt");
                     writer.newLine();
@@ -98,8 +101,7 @@ public class Diretorio {
      
 
     
-    private void createBucketFile(String ano){
-        String hashIndex = hash.HashFunction(ano, globalDepth);
+    private void createBucketFile(String hashIndex){
         String path = String.format("%s/bucket_%s.txt", dirBuckets, hashIndex);
     
         try {
@@ -145,7 +147,7 @@ public class Diretorio {
         bucket.insert(tuple, hashIndex);
 
     }
-    
+
     public void remove(String ano){
         
 
