@@ -30,7 +30,10 @@
                     
                     for(String tuple : tuples){
                         diretorio.insert(tuple, ano);
-                        line = "INC:" + ano + "/"+diretorio.getGlobalDepth()+",";
+                        int localDepthBucket = diretorio.getLocalDepth(ano);
+                        int globalDepth = diretorio.getGlobalDepth();
+
+                        line = "INC:" + ano + "/"+globalDepth+","+localDepthBucket;
                         output.writeFile(PG, line);
                     }
 
@@ -42,12 +45,14 @@
                 }else{
                     //System.out.println("Remover " + ano );
                     int numLinesRemoved = diretorio.remove(ano);
-                    line  = "REM:"+ano+"/"+numLinesRemoved;
+                    int localDepthBucket = diretorio.getLocalDepth(ano);
+                    int globalDepth = diretorio.getGlobalDepth();
+
+                    line  = "REM:"+ano+"/"+numLinesRemoved+","+globalDepth+","+localDepthBucket;
                     output.writeFile(PG, line);
                 }   
             }
 
-        
         }
     }
     

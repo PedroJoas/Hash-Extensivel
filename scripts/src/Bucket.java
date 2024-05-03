@@ -36,9 +36,9 @@ public class Bucket {
 
     public int getLocalDepth(String hashIndex) {
         // Pegar primeira linha do arquivo bucket
-        this.bucketFile = "bucket_" + hashIndex + ".txt";
+        String path = pathBucketFile + "bucket_" + hashIndex + ".txt";
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(pathBucketFile))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             this.localDepth = Integer.parseInt(reader.readLine().split("/")[1]);
         } catch (IOException e) {
             System.out.println("Error: IOException " + e.getMessage());
@@ -51,14 +51,14 @@ public class Bucket {
         this.numEntries = numEntries;
     }
     public int getNumEntries(String hashIndex) {
-        this.bucketFile = String.format("bucket_%d.txt", hashIndex);
+        String path = pathBucketFile + "bucket_" + hashIndex + ".txt";
         //  A primeira linha do arquivo bucket seria a profundidade local
         /*Exemplo
          * PL/2
          * "1,158,2020"
         */
         try{
-            BufferedReader reader = new BufferedReader(new FileReader(pathBucketFile));
+            BufferedReader reader = new BufferedReader(new FileReader(path));
             int lines = 0;
             while (reader.readLine() != null) lines++;
             this.numEntries = lines;
@@ -103,28 +103,34 @@ public class Bucket {
 
     // tuple = linhas do compras.csv
     
-    public void insert(String tuple, String hashIndex) throws IOException{
+    public void insert(String tuple, String hashIndex) throws IOException {
+        String path = pathBucketFile + "bucket_" + hashIndex + ".txt";
         
-        String path = pathBucketFile+"bucket_"+hashIndex+".txt";
-
+        BufferedWriter writer = null;
         try (BufferedReader file = new BufferedReader(new FileReader(path))) {
-
             if ((file.readLine() == null)) {
-
                 writer = new BufferedWriter(new FileWriter(path));
                 writer.write("PL/" + localDepth);
                 writer.newLine();
             }
+            if (!verificationDuplicates(hashIndex, tuple)) {
+                if (writer == null) {
+                    writer = new BufferedWriter(new FileWriter(path, true));
+                }
+                writer.write(tuple);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Error: failed IO in file: " + e.getMessage());
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
         }
-            writer = new BufferedWriter(new FileWriter(path, true));
-            writer.write(tuple);
-            writer.newLine();
-
-        // Caso 2.2: exista, mas esteja cheio
-        // Se caso 2.2 seja feito é necessário aumentar a profundidade global 
-        writer.close();
     }
+    
 
+    @SuppressWarnings("unchecked")
     public int remove(String hashIndex, String ano){
         String path = pathBucketFile+"bucket_"+hashIndex+".txt";
         String pathTempFile = pathBucketFile+"temp_bucket_"+hashIndex+".txt";
@@ -153,6 +159,8 @@ public class Bucket {
         }
         tempFile.renameTo(file);
 
+        removeBucket(hashIndex);
+
         return removeLines.size(); // Retornar o número de linhas apagadas
         // Após a remoção verificar o numero de valores dentro do bucket
         // Caso esteja vazio, apagar arquivo do bucket e dependendo diminuir profundidade global
@@ -160,17 +168,39 @@ public class Bucket {
 
     
     // Verificar as duplicatas dentro do bucket
-    public void verificationDuplicates(String bucketFile, String tuple){
-        // Verificar se os valores adicionandos já estão no bucket
+    public boolean verificationDuplicates(String hashIndex, String tuple) throws FileNotFoundException{
+        String path = pathBucketFile+"bucket_"+hashIndex+".txt";
+        BufferedReader reader =  new BufferedReader(new FileReader(path));
+        String line;
+        try {
+            while((line = reader.readLine()) != null){
+                if(line.equals(tuple)){
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
+        return false;
     }
+
     public void redistributionBucket(String bucketDuplicated, String newBucket){
         // redistribuir valores dentro do bucket
 
     }
 
     
-    private void identifyBucket(String hashIndex){
-        String bucketFilepath = String.format("",hashIndex, null);
+    private void removeBucket(String hashIndex){
+
+        String path = pathBucketFile+"bucket_"+hashIndex+".txt";
+        File file = new File(path);
+        if(getNumEntries(hashIndex) == 1){
+            file.delete();
+        }
+
     }
+
+
 }

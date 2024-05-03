@@ -119,7 +119,7 @@ public class Diretorio {
 
     private boolean verificationDirectoryFull(String hashIndex){
         
-        if((countBuckets() > Math.pow(2, bucket.getLocalDepth(hashIndex)))){
+        if((countBuckets() > Math.pow(2, globalDepth))){
             duplicateDirectory(hashIndex);   
         }
         
@@ -158,5 +158,12 @@ public class Diretorio {
         String hashIndex = hash.HashFunction(ano, globalDepth);
         int tuples = bucket.search(hashIndex, ano);
         return tuples;
+    }
+
+    public int getLocalDepth(String ano){
+        String hashIndex = hash.HashFunction(ano, globalDepth);
+
+        int localDepth = bucket.getLocalDepth(hashIndex);
+        return localDepth;
     }
 }
