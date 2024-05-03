@@ -138,6 +138,7 @@ public class Bucket {
                 writer.write("PL/" + localDepth);
                 writer.newLine();
             }
+            
             if (!verificationDuplicates(hashIndex, tuple)) {
                 if (writer == null) {
                     writer = new BufferedWriter(new FileWriter(path, true));

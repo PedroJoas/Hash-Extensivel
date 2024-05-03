@@ -37,10 +37,10 @@
                         output.writeFile(PG, line);
                     }
 
-                } else if (operation.equals("BUS")){ 
+                } else if (operation.equals("BUS=")){ 
                     int numTuples = diretorio.search(ano);
                     //System.out.println("BUS:"+ano+"/"+numTuples);
-                    line  = "BUS:"+ano+"/"+numTuples;
+                    line  = "BUS=:"+ano+"/"+numTuples;
                     output.writeFile(PG, line);
                 }else{
                     //System.out.println("Remover " + ano );

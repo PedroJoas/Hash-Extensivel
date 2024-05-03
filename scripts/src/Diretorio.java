@@ -138,8 +138,8 @@ public class Diretorio {
 
     
     public void insert(String tuple, String ano) throws IOException{
-        String hashIndex = hash.HashFunction(ano, globalDepth);
         // converter para o hash index
+        String hashIndex = hash.HashFunction(ano, globalDepth);
         
         // Preciso retornar a PG, PL
         if(!verificationBucketExists(hashIndex)){
